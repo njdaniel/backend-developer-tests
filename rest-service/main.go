@@ -23,7 +23,9 @@ func main() {
 	r.Path("/people/").Queries("first_name", "{first_name}", "last_name", "{last_name}").HandlerFunc(GetPeopleFilterName).Methods("GET")
 	r.Path("/people/").Queries("phone_number", "{phone_number}").HandlerFunc(GetPeopleFilterPhone).Methods("GET")
 
-	if err := http.ListenAndServe(":9000", r); err != nil {
+	port := ":9000"
+	fmt.Printf("Serving at %s \n", port)
+	if err := http.ListenAndServe(port, r); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -65,6 +67,7 @@ func GetPeopleFilterName(w http.ResponseWriter, r *http.Request) {
 //	@Success 200
 func GetPeopleFilterPhone(w http.ResponseWriter, r *http.Request) {
 	phone := r.FormValue("phone_number")
+	log.Println(phone)
 	w.WriteHeader(200)
 	json.NewEncoder(w).Encode(models.FindPeopleByPhoneNumber(phone))
 	return
