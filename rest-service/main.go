@@ -18,10 +18,10 @@ func main() {
 	r := mux.NewRouter()
 
 	// Routes:
+	r.Path("/people").Queries("phone_number", "{phone_number}").HandlerFunc(GetPeopleFilterPhone).Methods("GET")
+	r.Path("/people").Queries("first_name", "{first_name}", "last_name", "{last_name}").HandlerFunc(GetPeopleFilterName).Methods("GET")
 	r.HandleFunc("/people", GetAllPeople).Methods("GET")
 	r.HandleFunc("/people/{id}", GetPerson).Methods("GET")
-	r.Path("/people/").Queries("first_name", "{first_name}", "last_name", "{last_name}").HandlerFunc(GetPeopleFilterName).Methods("GET")
-	r.Path("/people/").Queries("phone_number", "{phone_number}").HandlerFunc(GetPeopleFilterPhone).Methods("GET")
 
 	port := ":9000"
 	fmt.Printf("Serving at %s \n", port)
@@ -33,6 +33,7 @@ func main() {
 //GetAllPeople responses with all the peoples in the system
 //	@Success 200
 func GetAllPeople(w http.ResponseWriter, r *http.Request) {
+	log.Println("Returning all people")
 	w.WriteHeader(200)
 	json.NewEncoder(w).Encode(models.AllPeople())
 	return
@@ -43,6 +44,7 @@ func GetAllPeople(w http.ResponseWriter, r *http.Request) {
 //	@Not Found 404 id person doesnt exist
 func GetPerson(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
+	log.Printf("Retreiving Person %v \n", id)
 	p, err := models.FindPersonByID(uuid.FromStringOrNil(id))
 	if err != nil {
 		w.WriteHeader(404)
@@ -58,6 +60,7 @@ func GetPerson(w http.ResponseWriter, r *http.Request) {
 func GetPeopleFilterName(w http.ResponseWriter, r *http.Request) {
 	firstName := r.FormValue("first_name")
 	lastName := r.FormValue("last_name")
+	log.Printf("Retreiving People with first-name: %s and last-name: %s \n", firstName, lastName)
 	w.WriteHeader(200)
 	json.NewEncoder(w).Encode(models.FindPeopleByName(firstName, lastName))
 	return
@@ -67,7 +70,8 @@ func GetPeopleFilterName(w http.ResponseWriter, r *http.Request) {
 //	@Success 200
 func GetPeopleFilterPhone(w http.ResponseWriter, r *http.Request) {
 	phone := r.FormValue("phone_number")
-	log.Println(phone)
+	fmt.Println(phone)
+	log.Printf("Retreiving People with phone-number : %v \n", phone)
 	w.WriteHeader(200)
 	json.NewEncoder(w).Encode(models.FindPeopleByPhoneNumber(phone))
 	return

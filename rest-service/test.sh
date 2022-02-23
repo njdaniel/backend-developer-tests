@@ -42,7 +42,7 @@ echo ""
 
 echo "Testing GET /people?first_name=:first_name&last_name=:last_name  *****************"
 echo "  testing for success 200"
-get_peoplename_200=$(curl -s -o /dev/null -w "%{http_code}" localhost:9000/people?first_name=John&last_name=Joe)
+get_peoplename_200=$(curl -s -o /dev/null -w "%{http_code}" 'localhost:9000/people?first_name=John&last_name=Joe')
 if [[ "${get_peoplename_200}" =~ ^200 ]]; then
     echo "SUCCESS: Got $get_peoplename_200"
 else
