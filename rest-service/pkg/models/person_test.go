@@ -14,7 +14,6 @@ func TestFindPeopleByPhoneNumber(t *testing.T) {
 		args args
 		want []*Person
 	}{
-		// TODO: Add test cases.
 		{name: "Find John Joe", args: args{phoneNumber: "+1 (800) 555-1212"}, want: people[0:1]},
 	}
 	for _, tt := range tests {
