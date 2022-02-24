@@ -14,8 +14,9 @@ func main() {
 
 	// Read STDIN into a new buffered reader
 	reader := bufio.NewReader(os.Stdin)
-
 	scanner := bufio.NewScanner(reader)
+	buf := []byte{}
+	scanner.Buffer(buf, 4096*1024)
 	for scanner.Scan() {
 		if strings.Contains(scanner.Text(), "error") {
 			fmt.Println(scanner.Text())
