@@ -16,14 +16,19 @@ type SimplePool interface {
 // zero.
 func NewSimplePool(maxConcurrent int) SimplePool {
 	//check if <= 0
+	if maxConcurrent <= 0 {
+		return nil
+	}
 
 	//asynchronous buffered channel
-	sp := make(pool, maxConcurrent)
+	sp := make(Pool, maxConcurrent)
 	return &sp
 }
 
-type pool chan func()
+type Pool chan func()
 
-func (p *pool) Submit(f func()) {
+func (p Pool) Submit(f func()) {
+	p <- f
 	f()
+	<-p
 }
