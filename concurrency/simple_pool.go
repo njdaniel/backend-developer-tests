@@ -15,5 +15,15 @@ type SimplePool interface {
 // concurrent tasks to run at any one time. maxConcurrent must be greater than
 // zero.
 func NewSimplePool(maxConcurrent int) SimplePool {
-	panic("TODO")
+	//check if <= 0
+
+	//asynchronous buffered channel
+	Chan := make(pool, maxConcurrent)
+	return &Chan
+}
+
+type pool chan func()
+
+func (p *pool) Submit(f func()) {
+	f()
 }
