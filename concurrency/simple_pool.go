@@ -18,8 +18,8 @@ func NewSimplePool(maxConcurrent int) SimplePool {
 	//check if <= 0
 
 	//asynchronous buffered channel
-	Chan := make(pool, maxConcurrent)
-	return &Chan
+	sp := make(pool, maxConcurrent)
+	return &sp
 }
 
 type pool chan func()
