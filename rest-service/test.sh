@@ -48,13 +48,35 @@ if [[ "${get_peoplename_200}" =~ ^200 ]]; then
 else
     echo "FAILED wanted 200, got $get_peoplename_200"
 fi
+#echo "  testing for result"
+#get_people_result=$(curl -s  -X GET 'localhost:9000/people?first_name=John&last_name=Doe')
+#echo "result: $get_people_result"
+#if [[ "${get_people_empty}" =~ ^\[()?!^$)([^\s])]  ]]; then
+#    echo "SUCCESS"
+#else
+#   echo "FAILED wanted [], got $get_people_empty" 
+#fi
+echo "  testing for empty result 200"
+get_peoplename_200=$(curl -s -o /dev/null -w "%{http_code}" 'localhost:9000/people?first_name=Donny&last_name=Zany')
+if [[ "${get_peoplename_200}" =~ ^200 ]]; then
+    echo "SUCCESS: Got $get_peoplename_200"
+else
+    echo "FAILED wanted 200, got $get_peoplename_200"
+fi
+#echo "  testing for empty array"
+#get_people_empty=$(curl -s -X GET 'localhost:9000/people?first_name=Donny&last_name=Zany')
+#echo " empty: $get_people_empty"
+#if [[ "${get_people_empty}" =~ ^\[]  ]]; then
+#    echo "SUCCESS"
+#else
+#   echo "FAILED wanted [], got $get_people_empty" 
 echo ""
 
-echo "Testing GET /people?first_name=:first_name&last_name=:last_name  *****************"
+echo "Testing GET /people?phone_number=\+1 \(800\)\ 555\-1313 *****************"
 echo "  testing for success 200"
 get_peoplephone_200=$(curl -s -o /dev/null -w "%{http_code}" localhost:9000/people?phone_number=\+1 \(800\)\ 555\-1313)
 if [[ "${get_peoplephone_200}" =~ ^200 ]]; then
-    echo "SUCCESS: Got $get_peoplephone_200"
+    echo "SUCCESS: Got 200"
 else
     echo "FAILED wanted 200, got $get_peoplephone_200"
 fi
@@ -62,7 +84,7 @@ fi
 echo "  testing for empty result 200"
 get_peoplephone_200=$(curl -s -o /dev/null -w "%{http_code}" localhost:9000/people?phone_number=\+1 \(800\)\ 555\-1313)
 if [[ "${get_peoplephone_200}" =~ ^200 ]]; then
-    echo "SUCCESS: Got $get_peoplephone_200"
+    echo "SUCCESS: Got 200"
 else
     echo "FAILED wanted 200, got $get_peoplephone_200"
 fi
