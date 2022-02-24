@@ -16,8 +16,9 @@ func main() {
 
 	// TODO: Look for lines in the STDIN reader that contain "error" and output them.
 	scanner := bufio.NewScanner(reader)
-	scanner.Scan()
-	if strings.Contains(scanner.Text(), "error") {
-		fmt.Println(scanner.Text())
+	for scanner.Scan() {
+		if strings.Contains(scanner.Text(), "error") {
+			fmt.Println(scanner.Text())
+		}
 	}
 }
