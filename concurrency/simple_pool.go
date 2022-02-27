@@ -25,8 +25,13 @@ func NewSimplePool(maxConcurrent int) SimplePool {
 	return &sp
 }
 
+// Pool safe to use for multiple goroutines simultaneously.
+// Use NewSimplePool to create pool with maxConcurrent tasks.
 type Pool chan func()
 
+// Submit method adds to pool and runs func asynchronously.
+// If there is no slots available, it blocks until there is spot.
+// This meets the requirement for Pool to be used as the SimplePool interface.
 func (p Pool) Submit(f func()) {
 	p <- f
 	f()
